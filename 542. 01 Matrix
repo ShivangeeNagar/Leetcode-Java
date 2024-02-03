@@ -1,0 +1,65 @@
+class Node {
+    int first;
+    int second;
+    int third;
+
+    Node( int _first, int _second, int _third) {
+        first = _first;
+        second = _second;
+        third = _third;
+    }
+}
+
+class Solution {
+    public int[][] updateMatrix(int[][] mat) {
+
+
+        int m = mat.length;
+        int n = mat[0].length;
+
+        int[][] dist = new int[m][n];
+        int[][] vis = new int[m][n];
+        Queue<Node> q = new LinkedList<>();
+
+        for(int i=0; i<m; i++) {
+            for(int j=0; j<n; j++) {
+                if(mat[i][j] == 0) {
+                    vis[i][j] = 1;
+                    q.add(new Node(i,j,0));
+                }
+                else {
+                    vis[i][j] = 0;
+                }
+
+            }
+        }
+
+        int delRow[] = {-1, 0, 1, 0};
+        int delCol[] = {0, 1, 0, -1};
+
+        while(!q.isEmpty()) {
+            int row = q.peek().first;
+            int col = q.peek().second;
+            int steps = q.peek().third;
+            q.remove();
+
+            dist[row][col] = steps;
+
+            for(int i=0; i<4; i++) {
+                int nRow = row + delRow[i];
+                int nCol = col + delCol[i];
+
+                if(nRow>=0 && nRow<m && nCol>=0 && nCol<n && vis[nRow][nCol] == 0) {
+                    vis[nRow][nCol] = 1;
+                    q.add(new Node(nRow, nCol, steps+1));
+ 
+                }
+            }
+
+        }
+
+            return dist;
+
+        
+    }
+}
