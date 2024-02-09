@@ -1,0 +1,63 @@
+class Solution {
+    public int numEnclaves(int[][] grid) {
+
+        int m = grid.length;
+        int n = grid[0].length;
+
+        int count = 0;
+        int vis[][] = new int[m][n];
+
+        for(int j=0; j<n; j++) {
+            if(vis[0][j] == 0 && grid[0][j] == 1) {
+                dfs(0, j, vis, grid);
+            }
+
+            if(vis[m-1][j] == 0 && grid[m-1][j] == 1) {
+                dfs(m-1, j, vis, grid);
+            }
+        }
+
+        for(int i=0; i<m; i++) {
+            if(vis[i][0] == 0 && grid[i][0] == 1) {
+                dfs(i, 0, vis, grid);
+            }
+
+            if(vis[i][n-1] == 0 && grid[i][n-1] == 1) {
+                dfs(i,n-1, vis, grid);
+            }
+        }
+
+        for(int i=0; i<m; i++) {
+            for(int j =0; j<n; j++) {
+                if(vis[i][j]==0 && grid[i][j] == 1){
+                    count++;
+                }
+            }
+        }
+
+        return count;
+
+    }
+
+    public void dfs(int row, int col, int[][]vis, int[][] grid) {
+        vis[row][col] = 1;
+
+        int m = grid.length;
+        int n = grid[0].length;
+
+        int delRow[] = {-1, 0, 1, 0};
+        int delCol[] = {0, 1, 0, -1};
+
+        for(int i=0; i<4; i++) {
+
+            int nRow = row+delRow[i];
+            int nCol = col+delCol[i];
+
+            if(nRow>=0 && nRow<m && nCol>=0 && nCol<n && vis[nRow][nCol] == 0 && grid[nRow][nCol]==1){
+                dfs(nRow, nCol, vis, grid);
+            }
+
+        }
+
+    }
+}
